@@ -2,10 +2,12 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const keys = require('../config/keys');
 
+
 //we don't import Mongoose models in the code because if you are 
 //running tests then models can be imported multiple times and cause confusion
 const mongoose = require('mongoose');
 const User = mongoose.model('users');
+
 
 passport.serializeUser((user, done) => {
     //user.id is a shortcut to access the MongoDV unique id for the user NOT the google ID

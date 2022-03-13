@@ -13,6 +13,7 @@ mongoose.connect(keys.mongoURI);
 
 const app = express();
 
+//adding middleware to use during authentication
 app.use(
     //declaring to use cookies 
     cookieSession({
@@ -20,7 +21,7 @@ app.use(
         maxAge: 30 * 24 * 60 * 60 * 1000,
         keys: [keys.cookieKey]
     })
-)
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
