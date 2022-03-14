@@ -32,7 +32,6 @@ passport.use(
         //redirect url
         callbackURL: '/auth/google/callback',
         proxy: true
-
         }, 
         (accessToken, refreshToken, profile, done) => {
             //check if there's an existing user_id to prevent duplications
