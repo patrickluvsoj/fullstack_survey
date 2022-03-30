@@ -33,22 +33,17 @@ passport.use(
         callbackURL: '/auth/google/callback',
         proxy: true
         }, 
-        (accessToken, refreshToken, profile, done) => {
+        async (accessToken, refreshToken, profile, done) => {
+
             //check if there's an existing user_id to prevent duplications
-            //this is an async function so need to chain with .then
-            User.findOne({googleId: profile.id})
-                .then(existingUser => {
-                    if (existingUser) {
-                        done(null, existingUser);
-                    } else {
-                        
-                        new User({googleId: profile.id})
-                            .save() //.save() will ensure the instance is saved in MongoDB
-                            .then(user => done(null, user));
-                    }
-                })
-            
-            console.log(profile);
+            const existingUser = await User.findOne({googleId: profile.id});
+            if (existingUser) {
+                return done(null, existingUser);
+            }    
+
+            //.save() will ensure the instance is saved in MongoDB
+            const user = await new User({googleId: profile.id}).save() ;
+            done(null, user);
         }
     )
 );

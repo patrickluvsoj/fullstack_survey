@@ -10,13 +10,20 @@ module.exports = app => {
         })
     );
     
-    app.get('/auth/google/callback', passport.authenticate('google'));
+    app.get('/auth/google/callback', 
+        // middleware that handles authentication but doesn't say where to go next
+        passport.authenticate('google'),
+        (req, res) => {
+            //redirect to another route handler. Take them to survey dashboard
+            res.redirect('/surveys')
+        }
+    );
 
-    app.get('/logout', (req, res) => {
+    app.get('/api/logout', (req, res) => {
         //logout enabled by passport
         req.logout();
         //show user data which should be empty/undefined
-        res.send(req.user);
+        res.redirect('/')
     })
 
     //testing if user information has been recognized
